@@ -35,7 +35,7 @@ link_directories(${LIBS}/GLFW/lib)
 set(SOURCE_FILES
     src/main.cpp
     src/shader.cpp
-    src/triangle.cpp
+    src/square.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES} ./external/glad/glad.c)

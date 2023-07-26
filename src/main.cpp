@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <glfw3.h>
 
-#include "triangle.h"
+#include "square.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -31,17 +31,17 @@ int main()
         return -1;
     }
 
-    triangle();
+    square();
 
      while (!glfwWindowShouldClose(window))
     {
         processInput(window);
 
-        glClearColor(1.0f, 0.5f, 0.5f, 1.0f);
+        glClearColor(0.20392156862745098f, 0.20784313725490197f, 0.2549019607843137f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
         glBindVertexArray(hctVAO); // This should be done every frame before the draw call
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glfwSwapBuffers(window);
         glfwPollEvents();

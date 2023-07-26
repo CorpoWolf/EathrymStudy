@@ -1,15 +1,21 @@
 #include "shader.h"
-#include "triangle.h"
+#include "square.h"
 
-unsigned int hctVBO;
-unsigned int hctVAO;
+unsigned int hctVBO, hctVAO, hctEBO; 
 
-void triangle() {
+void square() {
     float vertices[] = {
-      -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-       1.0f, -1.0f, 0.0f, 0.0f, 1.0f, 0.0f,
-       0.0f, 1.0f, 0.0f,  0.0f, 0.0f, 1.0f
+      -0.8f, -0.8f, 0.0f, 0.011764705882352941f, 0.2549019607843137f, 0.34901960784313724f,
+       0.8f, -0.8f, 0.0f, 0.00784313725490196f, 0.34901960784313724f, 0.3176470588235294f,
+       0.8f, 0.8f, 0.0f,  0.011764705882352941f, 0.5490196078431373f, 0.24313725490196078f,
+      -0.8f, 0.8f, 0.0f,  0.011764705882352941f, 0.5490196078431373f, 0.24313725490196078f
     };
+
+    unsigned int indices[] = {
+      0, 1, 2,
+      2, 3, 0 
+    };
+
     GLuint attribPos = 0;
     GLuint attribCol = 1;
 
@@ -23,9 +29,9 @@ void triangle() {
     GLuint vaoBindingPoint = 0;
     glVertexArrayVertexBuffer(
       hctVAO,             // VAO Binding
-      vaoBindingPoint,    // 
+      vaoBindingPoint,    // VAO Binding Point
       hctVBO,             // VBO Binding
-      0,                  // 
+      0,                  // Offset
       6*sizeof(float));   // stride
 
     glEnableVertexArrayAttrib(hctVAO, attribPos);
@@ -37,10 +43,16 @@ void triangle() {
     glVertexArrayAttribBinding(hctVAO, attribPos, vaoBindingPoint);
     glVertexArrayAttribBinding(hctVAO, attribCol, vaoBindingPoint);
 
+    //Step 3: Create EBO
+    glCreateBuffers(1, &hctEBO);
+    glNamedBufferStorage(hctEBO, sizeof(indices), indices, GL_DYNAMIC_STORAGE_BIT);
+
+    //Bind EBO to VAO
+    glVertexArrayElementBuffer(hctVAO, hctEBO);
+
     const char* vertexShaderPath = "../src/shaders/Vshade.vert";
     const char* fragmentShaderPath = "../src/shaders/Fshade.frag";
     
     GLuint shaderProgram = LoadShaders(vertexShaderPath, fragmentShaderPath);
     glUseProgram(shaderProgram);
 }
-
